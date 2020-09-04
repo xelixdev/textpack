@@ -6,13 +6,14 @@ from sparse_dot_topn import awesome_cossim_topn
 
 
 class TextPack():
-    def __init__(self, df, columns_to_group, match_threshold=0.75, ngram_remove=r'[,-./]', ngram_length=3):
+    def __init__(self, df, columns_to_group, match_threshold=0.75, ngram_remove=r'[,-./]', ngram_length=3, topn=None):
         self.df = df
         self.group_lookup = {}
         self._column = self._get_column(columns_to_group)
         self._match_threshold = match_threshold
         self._ngram_remove = ngram_remove
         self._ngram_length = ngram_length
+        self._topn=topn
 
     def _get_column(self, columns_to_group):
         if ''.join(columns_to_group) in self.df.columns:
@@ -32,7 +33,11 @@ class TextPack():
 
     def _get_cosine_matrix(self, vals):
         tf_idf_matrix = self._get_tf_idf_matrix(vals)
-        return awesome_cossim_topn(tf_idf_matrix, tf_idf_matrix.transpose(), vals.size, self._match_threshold)
+        if self._topn is None:
+            topn=vals.size
+        else:
+            topn=self._topn
+        return awesome_cossim_topn(tf_idf_matrix, tf_idf_matrix.transpose(), topn, self._match_threshold)
 
     def _find_group(self, y, x):
         if y in self.group_lookup:
