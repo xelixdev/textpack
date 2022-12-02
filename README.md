@@ -1,6 +1,11 @@
 ## What is this?
 
-TextPack efficiently groups similar values in large (or small) datasets. Under the hood, it builds a document term matrix of n-grams assigned a TF-IDF score. It then uses matrix multiplication to calculate the cosine similarity between these values. For a technical explination, [I wrote a blog post](https://medium.com/p/2493b3ce6d8d).
+TextPack efficiently groups similar values in large (or small) datasets. Under the hood, it builds a document term matrix of n-grams assigned a TF-IDF score. It then uses matrix multiplication to calculate the cosine similarity between these values. For a technical explanation, [I wrote a blog post](https://medium.com/p/2493b3ce6d8d).
+
+### About the fork
+
+This fork from the original at https://github.com/lukewhyte/textpack adds support for adding a topn size to the call to awesome_cossim_topn. 
+The fork is published to https://pypi.org/project/textpack2/.
 
 ## Why do I care?
 
@@ -70,7 +75,7 @@ Class parameters:
 
  - `df` (required): A Pandas' DataFrame containing the dataset to group
  - `columns_to_group` (required): A list or string matching the column header(s) you'd like to parse and group
- - `match_threshold` (optional): This is a floating point number between 0 and 1 that represents the cosine similarity threshold we'll use to determine if two strings should be grouped. The closer the threshold to 1, the higher the similarity will need to be to be considered a match.
+ - `match_threshold` (optional): This is a floating point number between 0 and 1 that represents the cosine similarity threshold we'll use to determine if two strings should be grouped. The closer the threshold to 1, the higher the similarity will need to be considered a match.
  - `ngram_remove` (optional): A regular expression you can use to filter characters out of your strings when we build our n-grams.
  - `ngram_length` (optional): The length of our n-grams. This can be used in tandem with `match_threshold` to find the sweet spot for grouping your dataset. If TextPack is running slow, it's usually a sign to consider raising the n-gram length.
 
@@ -137,6 +142,6 @@ Some users have triggered memory errors when parsing big data sets. [This StackO
 
 ## How does it work?
 
-As mentioned above, under the hood, we're building a document term matrix of n-grams assigned a TF-IDF score. We're then using matrix multipcation to quickly calculate the cosine similarity between these values.
+As mentioned above, under the hood, we're building a document term matrix of n-grams assigned a TF-IDF score. We're then using matrix multiplication to quickly calculate the cosine similarity between these values.
 
-I wrote [this blog post](https://medium.com/p/2493b3ce6d8d) to explian how TextPack works behind the scene. Check it out!
+I wrote [this blog post](https://medium.com/p/2493b3ce6d8d) to explain how TextPack works behind the scene. Check it out!
