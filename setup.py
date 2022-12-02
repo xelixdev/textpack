@@ -14,12 +14,12 @@ setuptools.setup(
     url="https://github.com/lukewhyte/textpack",
     packages=setuptools.find_packages(),
     install_requires=[
-        'pandas',
-        'sklearn',
-        'scipy',
-        'numpy',
-        'cython',
-        'sparse-dot-topn'
+        "pandas",
+        "scikit-learn",
+        "scipy",
+        "numpy",
+        "cython",
+        "sparse-dot-topn",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
