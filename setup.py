@@ -4,14 +4,16 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="textpack",
-    version="0.0.5",
+    name="textpack2",
+    version="0.1.0",
     author="Luke Whyte",
     author_email="lukeawhyte@gmail.com",
+    maintainer="Mikuláš Poul",
+    maintainer_email="mikulaspoul@gmail.com",
     description="Quickly identify and group similar text strings in a large dataset",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/lukewhyte/textpack",
+    url="https://github.com/xelixdev/textpack",
     packages=setuptools.find_packages(),
     install_requires=[
         "pandas",
