@@ -50,6 +50,9 @@ class TextPack:
             topn = vals.size
         else:
             topn = self._topn
+
+        self.logger.info("Finished building TF-IDF matrix, running awesome_cossim_topn with topn=%s", topn)
+        
         return awesome_cossim_topn(tf_idf_matrix, tf_idf_matrix.transpose(), topn, self._match_threshold)
 
     def _find_group(self, y, x):
