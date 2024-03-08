@@ -1,3 +1,4 @@
+import logging
 import re
 import numpy as np
 import pandas as pd
@@ -14,6 +15,7 @@ class TextPack:
         ngram_remove=r"[,-./]",
         ngram_length=3,
         topn=None,
+        logger_name="textpack",
     ):
         self.df = df
         self.group_lookup = {}
@@ -22,6 +24,7 @@ class TextPack:
         self._ngram_remove = ngram_remove
         self._ngram_length = ngram_length
         self._topn = topn
+        self.logger = logging.getLogger(logger_name)
 
     def _get_column(self, columns_to_group):
         if "".join(columns_to_group) in self.df.columns:
@@ -80,22 +83,22 @@ class TextPack:
     def build_group_lookup(self):
         vals = self.df[self._column].unique().astype("U")
 
-        print("Building the TF-IDF, Cosine & Coord matrices...")
+        self.logger.info("Building the TF-IDF, Cosine & Coord matrices...")
         coord_matrix = self._get_cosine_matrix(vals).tocoo()
 
-        print("Building the group lookup...")
+        self.logger.info("Building the group lookup...")
         for row, col in zip(coord_matrix.row, coord_matrix.col):
             if row != col:
                 self._add_pair_to_lookup(vals[row], vals[col])
 
     def add_grouped_column_to_data(self, column_name="Group"):
-        print("Adding grouped columns to data frame...")
+        self.logger.info("Adding grouped columns to data frame...")
         self.df[column_name] = self.df[self._column].map(self.group_lookup).fillna(self.df[self._column])
 
     def run(self, column_name="Group"):
         self.build_group_lookup()
         self.add_grouped_column_to_data(column_name)
-        print("Ready for export")
+        self.logger.info("Ready for export")
 
     def _filter_df_for_export(self):
         return self.df.drop(columns=["textpackGrouper"]) if "textpackGrouper" in self.df.columns else self.df
