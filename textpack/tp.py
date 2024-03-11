@@ -1,6 +1,6 @@
 import logging
 import re
-import numpy as np
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sparse_dot_topn import awesome_cossim_topn
@@ -16,6 +16,8 @@ class TextPack:
         ngram_length=3,
         topn=None,
         logger_name="textpack",
+        use_threads=False,
+        n_jobs=1,
     ):
         self.df = df
         self.group_lookup = {}
@@ -25,6 +27,8 @@ class TextPack:
         self._ngram_length = ngram_length
         self._topn = topn
         self.logger = logging.getLogger(logger_name)
+        self.use_threads = use_threads
+        self.n_jobs = n_jobs
 
     def _get_column(self, columns_to_group):
         if "".join(columns_to_group) in self.df.columns:
@@ -53,7 +57,14 @@ class TextPack:
 
         self.logger.info("Finished building TF-IDF matrix, running awesome_cossim_topn with topn=%s", topn)
         
-        return awesome_cossim_topn(tf_idf_matrix, tf_idf_matrix.transpose(), topn, self._match_threshold)
+        return awesome_cossim_topn(
+            tf_idf_matrix,
+            tf_idf_matrix.transpose(),
+            topn,
+            self._match_threshold,
+            use_threads=self.use_threads,
+            n_jobs=self.n_jobs,
+        )
 
     def _find_group(self, y, x):
         if y in self.group_lookup:
