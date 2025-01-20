@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/trufflesecurity/trufflehog.git
-  rev: "v3.84.2"
+  rev: "v3.88.2"
   hooks:
   - id: trufflehog
     name: TruffleHog
